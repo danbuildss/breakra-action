@@ -10,9 +10,9 @@ inputs:
     description: Path to the OpenAPI 3.0/3.1 contract in the repository (JSON or YAML).
     required: true
   fail-on:
-    description: "Fail the check at this verdict: block (breaking changes) or review (also potentially breaking and unknown)."
+    description: "Fail the check at this verdict: review (default: breaking, potentially breaking and unknown changes) or block (only breaking changes, such as a removed operation)."
     required: false
-    default: block
+    default: review
   use:
     description: Operations your code calls, one per line (for example "GET /orders/{id}"). Only changes that affect them count.
     required: false

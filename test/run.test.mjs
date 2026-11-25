@@ -162,3 +162,15 @@ test("bad inputs are refused before anything runs", async () => {
   assert.equal(await main(env(r, { INPUT_SPEC: "../outside.yaml" })), 2);
   assert.equal(await main(env(r, { INPUT_BASE: "--upload-pack=x" })), 2);
 });
+
+test("default fail-on is review: a new required parameter fails the check", { timeout: 120_000 }, async () => {
+  const r = repo("review/before.yaml", "review/after.yaml");
+  assert.equal(await main(env(r)), 1);
+  assert.match(readFileSync(r.output, "utf8"), /verdict=review/);
+});
+
+test("fail-on: block lets a REVIEW change pass (the comment still lists it)", { timeout: 120_000 }, async () => {
+  const r = repo("review/before.yaml", "review/after.yaml");
+  assert.equal(await main(env(r, { INPUT_FAIL_ON: "block" })), 0);
+  assert.match(readFileSync(r.stepSummary, "utf8"), /new required query parameter/);
+});
