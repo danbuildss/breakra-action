@@ -37,9 +37,9 @@ That's all. The action fetches the base commit itself, so the default shallow ch
 |---|---|---|
 | **BLOCK** | A change that breaks every caller of it: an operation was removed. | Fails |
 | **REVIEW** | Changes that can break callers depending on how they use the API: a new required parameter or request field, a removed or no-longer-guaranteed response field, a narrowed enum, and changes Breakra can't classify with certainty. | Fails only with `fail-on: review` |
+| **SAFE** | No changes that break callers. | Passes |
 
 Most real-world breakages are REVIEW-level, so many teams set `fail-on: review`.
-| **SAFE** | No changes that break callers. | Passes |
 
 If the contract can't be read or checked, the step **fails as "unchecked"**. It never passes silently. A contract that is new on the branch passes with verdict `new`.
 
