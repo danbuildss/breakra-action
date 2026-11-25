@@ -1,0 +1,64 @@
+name: Breakra
+description: Fail a pull request when its OpenAPI contract change may break callers. Deterministic, free, nothing leaves the runner.
+author: Breakra
+branding:
+  icon: shield
+  color: gray-dark
+
+inputs:
+  spec:
+    description: Path to the OpenAPI 3.0/3.1 contract in the repository (JSON or YAML).
+    required: true
+  fail-on:
+    description: "Fail the check at this verdict: block (breaking changes) or review (also potentially breaking and unknown)."
+    required: false
+    default: block
+  use:
+    description: Operations your code calls, one per line (for example "GET /orders/{id}"). Only changes that affect them count.
+    required: false
+    default: ""
+  comment:
+    description: Post one pull-request comment with the result, updated on each push. Needs pull-requests write permission.
+    required: false
+    default: "true"
+  base:
+    description: Git ref or SHA to compare against. Defaults to the pull request's base commit.
+    required: false
+    default: ""
+  version:
+    description: The breakra npm package version to run (pinned so results change only when you choose).
+    required: false
+    default: 0.2.2
+  github-token:
+    description: Token used to post the comment.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  verdict:
+    description: "block, review, safe, new (contract added on this branch) or error."
+    value: ${{ steps.breakra.outputs.verdict }}
+  breaking_count:
+    description: Number of breaking changes (those affecting `use`, when given).
+    value: ${{ steps.breakra.outputs.breaking_count }}
+  analysis_id:
+    description: Deterministic id of the analysis; the same inputs always give the same id.
+    value: ${{ steps.breakra.outputs.analysis_id }}
+  result_file:
+    description: Path to the full JSON result.
+    value: ${{ steps.breakra.outputs.result_file }}
+
+runs:
+  using: composite
+  steps:
+    - id: breakra
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/run.mjs"
+      env:
+        INPUT_SPEC: ${{ inputs.spec }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_USE: ${{ inputs.use }}
+        INPUT_COMMENT: ${{ inputs.comment }}
+        INPUT_BASE: ${{ inputs.base }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_TOKEN: ${{ inputs.github-token }}
