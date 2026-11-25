@@ -23,7 +23,7 @@ jobs:
   breakra:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: danbuildss/breakra-action@v1
         with:
           spec: openapi.yaml
