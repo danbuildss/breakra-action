@@ -141,12 +141,12 @@ export async function main(env = process.env) {
   };
 
   const spec = (env.INPUT_SPEC ?? "").trim();
-  const failOn = (env.INPUT_FAIL_ON || "block").trim();
+  const failOn = (env.INPUT_FAIL_ON || "review").trim();
   const version = (env.INPUT_VERSION || "0.2.2").trim();
   const uses = (env.INPUT_USE ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
   const workspace = env.GITHUB_WORKSPACE || process.cwd();
   if (!spec) return fail("Set the `spec` input to your OpenAPI file.");
-  if (!(failOn in RANK) || failOn === "safe") return fail("`fail-on` must be block or review.");
+  if (!(failOn in RANK) || failOn === "safe") return fail("`fail-on` must be review or block.");
   if (!/^\d+\.\d+\.\d+$/.test(version)) return fail("`version` must be an exact version such as 0.2.2.");
 
   const event = env.GITHUB_EVENT_PATH && existsSync(env.GITHUB_EVENT_PATH) ? JSON.parse(readFileSync(env.GITHUB_EVENT_PATH, "utf8")) : {};

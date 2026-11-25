@@ -36,10 +36,10 @@ That's all. The action fetches the base commit itself, so the default shallow ch
 | Verdict | Meaning | Check |
 |---|---|---|
 | **BLOCK** | A change that breaks every caller of it: an operation was removed. | Fails |
-| **REVIEW** | Changes that can break callers depending on how they use the API: a new required parameter or request field, a removed or no-longer-guaranteed response field, a narrowed enum, and changes Breakra can't classify with certainty. | Fails only with `fail-on: review` |
+| **REVIEW** | Changes that can break callers depending on how they use the API: a new required parameter or request field, a removed or no-longer-guaranteed response field, a narrowed enum, and changes Breakra can't classify with certainty. | Fails (default); passes with `fail-on: block` |
 | **SAFE** | No changes that break callers. | Passes |
 
-Most real-world breakages are REVIEW-level, so many teams set `fail-on: review`.
+Most real-world breakages are REVIEW-level, so the check fails on them by default. Set `fail-on: block` to fail only when an operation is removed; the comment still lists every change.
 
 If the contract can't be read or checked, the step **fails as "unchecked"**. It never passes silently. A contract that is new on the branch passes with verdict `new`.
 
@@ -50,7 +50,7 @@ The comment lists each change with the operation, where it is, why it matters an
 | Input | Default | Description |
 |---|---|---|
 | `spec` | (required) | Path to your OpenAPI 3.0/3.1 contract, JSON or YAML. |
-| `fail-on` | `block` | `block`, or `review` to also fail on potentially breaking and unknown changes. |
+| `fail-on` | `review` | `review` fails on breaking, potentially breaking and unknown changes; `block` fails only on breaking ones (a removed operation). |
 | `use` | | Operations your code calls, one per line (`GET /orders/{id}`). Only changes that affect them count. |
 | `comment` | `true` | Post or update the pull-request comment. |
 | `base` | the PR's base commit | Git ref or SHA to compare against (for use outside `pull_request`). |
@@ -69,7 +69,7 @@ Add one step per contract; each keeps its own comment.
       - uses: danbuildss/breakra-action@v1
         with: { spec: services/orders/openapi.yaml }
       - uses: danbuildss/breakra-action@v1
-        with: { spec: services/billing/openapi.json, fail-on: review }
+        with: { spec: services/billing/openapi.json, fail-on: block }
 ```
 
 ## Security
