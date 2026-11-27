@@ -54,7 +54,7 @@ The comment lists each change with the operation, where it is, why it matters an
 | `use` | | Operations your code calls, one per line (`GET /orders/{id}`). Only changes that affect them count. |
 | `comment` | `true` | Post or update the pull-request comment. |
 | `base` | the PR's base commit | Git ref or SHA to compare against (for use outside `pull_request`). |
-| `version` | `0.3.1` | The `breakra` npm version to run. Pinned, so your results change only when you choose. 0.3.0 and later accept contracts up to 25 MB per file (whole GitHub-scale APIs). |
+| `version` | `0.4.0` | The `breakra` npm version to run. Pinned, so your results change only when you choose. 0.3.0 and later accept contracts up to 25 MB per file (whole GitHub-scale APIs); 0.4.0 (rule set 0.3.0) adds OpenAPI 3.1.2 and fixes false results found by Orric. |
 | `github-token` | `github.token` | Token used for the comment. |
 
 ## Outputs
@@ -78,7 +78,7 @@ Add one step per contract; each keeps its own comment.
 - It only uses the job's own token, to comment. Pull requests from forks get a read-only token, so there the result appears in the job summary instead.
 - Text from the contract is escaped before it goes into the comment (no links, mentions or HTML from a hostile spec).
 - Requires Node 20+ on the runner (GitHub-hosted runners have it).
-- Large contracts: the default `breakra` 0.3.1 accepts up to 25 MB per file, 20,000 operations and 5,000,000 nodes once `$ref`s are expanded (GitHub's full REST description checks in about 8 s).
+- Large contracts: the default `breakra` 0.4.0 accepts up to 25 MB per file, 20,000 operations and 5,000,000 nodes once `$ref`s are expanded (GitHub's full REST description checks in about 8 s). A `oneOf`/`anyOf` over 64 options whose options are both replaced and added is refused as unchecked, since comparing it takes minutes.
 
 ## Run the same check locally
 

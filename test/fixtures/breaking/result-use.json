@@ -1,8 +1,8 @@
 {
   "status": "success",
-  "analysis_id": "sha256:43831422a51d74deb4f257b3931ab35308a4f511a3077b8ebfd240c9057016c5",
-  "engine_version": "0.2.0",
-  "rule_set_version": "0.2.0",
+  "analysis_id": "sha256:472f907f60fcb82899f4220f28b7b78781cda19e14082e1e8b1c9de9fed1a94b",
+  "engine_version": "0.3.0",
+  "rule_set_version": "0.3.0",
   "spec_versions": {
     "before": "3.0.3",
     "after": "3.0.3"
@@ -86,7 +86,6 @@
       "before": "sha256:04adb3ac0f6cad7fbc4836f1540fb61ea10a808f030b828f570eecd12a64d6fc",
       "after": "sha256:197f07d25e4304018632f68f19e78167392dfcc17aa3debaa249bfdad3aa7d76"
     },
-    "changes_omitted": 0,
-    "duration_ms": 24
+    "changes_omitted": 0
   }
 }
