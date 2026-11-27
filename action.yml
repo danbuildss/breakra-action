@@ -28,7 +28,7 @@ inputs:
   version:
     description: The breakra npm package version to run (pinned so results change only when you choose).
     required: false
-    default: 0.2.2
+    default: 0.3.0
   github-token:
     description: Token used to post the comment.
     required: false
